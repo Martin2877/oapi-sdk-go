@@ -1,4 +1,4 @@
-module github.com/larksuite/oapi-sdk-go/v3
+module github.com/martin2877/oapi-sdk-go/v3
 
 go 1.13
 
