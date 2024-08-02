@@ -14,7 +14,7 @@ package larkcard
 
 import (
 	"context"
-	"crypto/sha1"
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -231,7 +231,7 @@ func (h *CardActionHandler) DoHandle(ctx context.Context, cardAction *CardAction
 }
 
 func (h *CardActionHandler) VerifySign(ctx context.Context, req *larkevent.EventReq) error {
-	if h.verificationToken == "" {
+	if h.eventEncryptKey == "" {
 		return nil
 	}
 
@@ -250,7 +250,7 @@ func (h *CardActionHandler) VerifySign(ctx context.Context, req *larkevent.Event
 
 	// 执行sha1签名计算
 	targetSign := Signature(requestTimestamp, requestNonce,
-		h.verificationToken,
+		h.eventEncryptKey,
 		string(req.Body))
 
 	sourceSigns := req.Header[larkevent.EventSignature]
@@ -273,7 +273,7 @@ func Signature(timestamp, nonce, token, body string) string {
 	b.WriteString(token)
 	b.WriteString(body)
 	bs := []byte(b.String())
-	h := sha1.New()
+	h := sha256.New()
 	_, _ = h.Write(bs)
 	bs = h.Sum(nil)
 	return fmt.Sprintf("%x", bs)

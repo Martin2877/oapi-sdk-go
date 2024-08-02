@@ -1072,28 +1072,66 @@ func (i18n *MessageCardPlainTextI18n) Build() *MessageCardPlainTextI18n {
 
 type CardAction struct {
 	*larkevent.EventReq
-	OpenID        string `json:"open_id"`
-	UserID        string `json:"user_id"`
-	OpenMessageID string `json:"open_message_id"`
-	OpenChatId    string `json:"open_chat_id"`
-	TenantKey     string `json:"tenant_key"`
-	Token         string `json:"token"`
-	Timezone      string `json:"timezone"`
-	Challenge     string `json:"challenge"`
-	Type          string `json:"type"`
+	Schema string `json:"schema"`
+	Header struct {
+		EventID    string `json:"event_id"`
+		Token      string `json:"token"`
+		CreateTime string `json:"create_time"`
+		EventType  string `json:"event_type"`
+		TenantKey  string `json:"tenant_key"`
+		AppID      string `json:"app_id"`
+	} `json:"header"`
 
-	Action *struct {
-		Value      map[string]interface{} `json:"value"`
-		Tag        string                 `json:"tag"`
-		Option     string                 `json:"option"`
-		Timezone   string                 `json:"timezone"`
-		Name       string                 `json:"name"`
-		FormValue  map[string]interface{} `json:"form_value"`
-		InputValue string                 `json:"input_value"`
-		Options    []string               `json:"options"`
-		Checked    bool                   `json:"checked"`
-	} `json:"action"`
+	Challenge string `json:"challenge"`
+	Token     string `json:"token"`
+	Type      string `json:"type"`
+
+	Event struct {
+		Operator struct {
+			TenantKey string `json:"tenant_key"`
+			UserID    string `json:"user_id"`
+			OpenID    string `json:"open_id"`
+			UnionID   string `json:"union_id"`
+		} `json:"operator"`
+		Token  string `json:"token"`
+		Action struct {
+			Tag       string            `json:"tag"`
+			Timezone  string            `json:"timezone"`
+			FormValue map[string]string `json:"form_value"`
+			Name      string            `json:"name"`
+		} `json:"action"`
+		Host    string `json:"host"`
+		Context struct {
+			OpenMessageID string `json:"open_message_id"`
+			OpenChatID    string `json:"open_chat_id"`
+		} `json:"context"`
+	} `json:"event"`
 }
+
+// type CardAction struct {
+// 	*larkevent.EventReq
+// 	OpenID        string `json:"open_id"`
+// 	UserID        string `json:"user_id"`
+// 	OpenMessageID string `json:"open_message_id"`
+// 	OpenChatId    string `json:"open_chat_id"`
+// 	TenantKey     string `json:"tenant_key"`
+// 	Token         string `json:"token"`
+// 	Timezone      string `json:"timezone"`
+// 	Challenge     string `json:"challenge"`
+// 	Type          string `json:"type"`
+
+// 	Action *struct {
+// 		Value      map[string]interface{} `json:"value"`
+// 		Tag        string                 `json:"tag"`
+// 		Option     string                 `json:"option"`
+// 		Timezone   string                 `json:"timezone"`
+// 		Name       string                 `json:"name"`
+// 		FormValue  map[string]interface{} `json:"form_value"`
+// 		InputValue string                 `json:"input_value"`
+// 		Options    []string               `json:"options"`
+// 		Checked    bool                   `json:"checked"`
+// 	} `json:"action"`
+// }
 
 type cardChallenge struct {
 	Challenge string `json:"challenge"`
